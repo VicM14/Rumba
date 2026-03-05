@@ -1,6 +1,6 @@
-##Tocó aprender GitHub desde 0
+<h1 align="center">📚 Tocó aprender GitHub desde 0</h1>
 
-![Aprender GitHub](https://pbs.twimg.com/media/HCpwr3cW8AALasH?format=jpg&name=small)
-
----
+<p align="center">
+  <img src="https://pbs.twimg.com/media/HCpwr3cW8AALasH?format=jpg&name=small" width="700">
+</p>
 
