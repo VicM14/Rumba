@@ -1,0 +1,10 @@
+# Ignorar la carpeta de configuración de Visual Studio
+.vs/
+
+# Ignorar carpetas de compilación
+/[Bb]in/
+/[Oo]bj/
+
+# Archivos de base de datos de VS (el que te dio el error)
+*.opendb
+*.db
