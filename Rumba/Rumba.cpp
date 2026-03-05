@@ -4,7 +4,7 @@
 
 int main()
 {
-    std::cout << "Esto es una prueba!\n";
+    std::cout << "Esto es una prueba! en main\n";
 }
 
 
