@@ -1,6 +1,3 @@
-// Simulador de Aspiradora Robot - Niveles 0 y 1
-// Compilar en Visual Studio: Ctrl+F5 para ejecutar
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -53,23 +50,24 @@ public:
 };
 
 // ============================================
-// NIVEL 0: Clase Window (Ventana básica)
+// NIVEL 0: Clase Window (Ventana basica)
 // ============================================
 class Window {
 private:
     int width;
     int height;
     std::vector<std::vector<char>> buffer;
-    bool isRunning;
 
 public:
-    Window(int w = 60, int h = 20) : width(w), height(h), isRunning(true) {
+    Window(int w, int h) : width(w), height(h) {
         buffer.resize(height, std::vector<char>(width, ' '));
     }
 
     void clear() {
-        for (auto& row : buffer) {
-            std::fill(row.begin(), row.end(), ' ');
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                buffer[i][j] = ' ';
+            }
         }
     }
 
@@ -103,17 +101,19 @@ public:
         }
     }
 
-    void drawText(int x, int y, const std::string& text) {
-        for (size_t i = 0; i < text.length() && x + i < (size_t)width; i++) {
-            drawChar(x + (int)i, y, text[i]);
+    void drawText(int x, int y, const char* text) {
+        int i = 0;
+        while (text[i] != '\0' && x + i < width) {
+            drawChar(x + i, y, text[i]);
+            i++;
         }
     }
 
     void render() {
         clearScreen();
-        for (const auto& row : buffer) {
-            for (char c : row) {
-                std::cout << c;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                std::cout << buffer[i][j];
             }
             std::cout << '\n';
         }
@@ -126,53 +126,50 @@ public:
         return '\0';
     }
 
-    int getWidth() const { return width; }
-    int getHeight() const { return height; }
-    bool getIsRunning() const { return isRunning; }
-    void close() { isRunning = false; }
+    int getWidth() { return width; }
+    int getHeight() { return height; }
 };
 
 // ============================================
 // NIVEL 1: Clase Vacuum (Aspiradora)
 // ============================================
-enum class Direction {
-    STOP,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
-
 class Vacuum {
 private:
     Vector2 position;
     Vector2 velocity;
-    Direction direction;
+    int direction; // 0=stop, 1=up, 2=down, 3=left, 4=right
     float speed;
 
 public:
     Vacuum(float x, float y) {
         position = Vector2(x, y);
         velocity = Vector2(0, 0);
-        direction = Direction::STOP;
+        direction = 0;
         speed = 1.0f;
     }
 
-    void setDirection(Direction dir) {
+    void setDirection(int dir) {
         direction = dir;
-        switch (direction) {
-        case Direction::UP:    velocity = Vector2(0, -speed); break;
-        case Direction::DOWN:  velocity = Vector2(0, speed);  break;
-        case Direction::LEFT:  velocity = Vector2(-speed, 0); break;
-        case Direction::RIGHT: velocity = Vector2(speed, 0);  break;
-        default:               velocity = Vector2(0, 0);      break;
+        if (direction == 1) {
+            velocity = Vector2(0, -speed);
+        }
+        else if (direction == 2) {
+            velocity = Vector2(0, speed);
+        }
+        else if (direction == 3) {
+            velocity = Vector2(-speed, 0);
+        }
+        else if (direction == 4) {
+            velocity = Vector2(speed, 0);
+        }
+        else {
+            velocity = Vector2(0, 0);
         }
     }
 
     void update(int screenWidth, int screenHeight) {
         position += velocity;
 
-        // Limitar dentro de la pantalla
         if (position.x < 1) position.x = 1;
         if (position.y < 1) position.y = 1;
         if (position.x >= screenWidth - 2) position.x = (float)(screenWidth - 3);
@@ -180,36 +177,40 @@ public:
     }
 
     void handleInput(char key) {
-        switch (key) {
-        case 'w': case 'W': setDirection(Direction::UP);    break;
-        case 's': case 'S': setDirection(Direction::DOWN);  break;
-        case 'a': case 'A': setDirection(Direction::LEFT);  break;
-        case 'd': case 'D': setDirection(Direction::RIGHT); break;
-        case ' ':           setDirection(Direction::STOP);  break;
+        if (key == 'w' || key == 'W') {
+            setDirection(1);
+        }
+        else if (key == 's' || key == 'S') {
+            setDirection(2);
+        }
+        else if (key == 'a' || key == 'A') {
+            setDirection(3);
+        }
+        else if (key == 'd' || key == 'D') {
+            setDirection(4);
+        }
+        else if (key == ' ') {
+            setDirection(0);
         }
     }
 
-    int getX() const { return (int)position.x; }
-    int getY() const { return (int)position.y; }
+    int getX() { return (int)position.x; }
+    int getY() { return (int)position.y; }
 
-    char getSymbol() const {
-        switch (direction) {
-        case Direction::UP:    return '^';
-        case Direction::DOWN:  return 'v';
-        case Direction::LEFT:  return '<';
-        case Direction::RIGHT: return '>';
-        default:               return 'O';
-        }
+    char getSymbol() {
+        if (direction == 1) return '^';
+        if (direction == 2) return 'v';
+        if (direction == 3) return '<';
+        if (direction == 4) return '>';
+        return 'O';
     }
 
-    std::string getDirectionString() const {
-        switch (direction) {
-        case Direction::UP:    return "ARRIBA";
-        case Direction::DOWN:  return "ABAJO";
-        case Direction::LEFT:  return "IZQUIERDA";
-        case Direction::RIGHT: return "DERECHA";
-        default:               return "DETENIDO";
-        }
+    const char* getDirectionString() {
+        if (direction == 1) return "ARRIBA";
+        if (direction == 2) return "ABAJO";
+        if (direction == 3) return "IZQUIERDA";
+        if (direction == 4) return "DERECHA";
+        return "DETENIDO";
     }
 };
 
@@ -217,15 +218,10 @@ public:
 // PROGRAMA PRINCIPAL
 // ============================================
 int main() {
-    // Crear ventana
     Window window(60, 20);
-
-    // Crear aspiradora en el centro
     Vacuum vacuum(30, 10);
-
     bool running = true;
 
-    // Mensaje inicial
     std::cout << "========================================\n";
     std::cout << "    SIMULADOR DE ASPIRADORA ROBOT\n";
     std::cout << "         Niveles 0 y 1\n";
@@ -242,10 +238,9 @@ int main() {
     std::cout << "Presione ENTER para comenzar...";
     std::cin.get();
 
-    // Game loop
     while (running) {
-        // Procesar input
         char key = window.getKeyPressed();
+
         if (key == 'q' || key == 'Q') {
             running = false;
         }
@@ -253,34 +248,26 @@ int main() {
             vacuum.handleInput(key);
         }
 
-        // Actualizar
         vacuum.update(window.getWidth(), window.getHeight());
 
-        // Renderizar
         window.clear();
         window.drawBorder();
-
-        // Dibujar aspiradora
         window.drawChar(vacuum.getX(), vacuum.getY(), vacuum.getSymbol());
 
-        // Información
         window.drawText(2, 1, "ASPIRADORA ROBOT");
-        window.drawText(2, window.getHeight() - 3, "Pos: (" + std::to_string(vacuum.getX()) + "," + std::to_string(vacuum.getY()) + ")");
-        window.drawText(2, window.getHeight() - 2, "Dir: " + vacuum.getDirectionString());
-        window.drawText(35, window.getHeight() - 2, "Q=Salir");
+        window.drawText(2, 17, "Dir:");
+        window.drawText(7, 17, vacuum.getDirectionString());
+        window.drawText(45, 17, "Q = Salir");
 
         window.render();
 
-        // Esperar (control de velocidad)
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        Sleep(100);
     }
 
-    // Mensaje final
-    window.clearScreen();
+    system("cls");
     std::cout << "\nSimulacion finalizada.\n";
 
     return 0;
-}
 }
 
 
