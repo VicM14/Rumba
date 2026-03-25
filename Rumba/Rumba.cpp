@@ -1,24 +1,24 @@
-/**
+Ôªø/**
  * =============================================================================
  * ROBOT ASPIRADOR - CALCULADOR DE SUPERFICIE Y TIEMPO DE LIMPIEZA
  * =============================================================================
  *
- * DescripciÛn:
- *   Este programa calcula la superficie total de una habitaciÛn dividida en
+ * Descripci√≥n:
+ *   Este programa calcula la superficie total de una habitaci√≥n dividida en
  *   zonas y estima el tiempo de limpieza de un robot aspirador. Utiliza
- *   programaciÛn concurrente (hilos/threads) para el c·lculo distribuido
- *   de las ·reas de cada zona. Incluye una interfaz gr·fica Win32.
+ *   programaci√≥n concurrente (hilos/threads) para el c√°lculo distribuido
+ *   de las √°reas de cada zona. Incluye una interfaz gr√°fica Win32.
  *
  * Enfoque distribuido:
- *   Se usa std::thread y std::future/std::async para lanzar el c·lculo
+ *   Se usa std::thread y std::future/std::async para lanzar el c√°lculo
  *   de cada zona en un hilo independiente, simulando procesamiento distribuido.
  *   Los resultados se sincronizan mediante std::future y se integran en el
  *   hilo principal.
  *
- * CompilaciÛn (MinGW):
+ * Compilaci√≥n (MinGW):
  *   g++ -o robot_aspirador robot_aspirador.cpp -lgdi32 -mwindows -static
  *
- * CompilaciÛn (MSVC):
+ * Compilaci√≥n (MSVC):
  *   cl robot_aspirador.cpp /EHsc /link user32.lib gdi32.lib
  *
  * Autor: Estudiante
@@ -38,19 +38,26 @@
 #include <cmath>
 
  // =============================================================================
+ // TITULO DE LA VENTANA (EDITABLE)
+ // Cambia este texto para personalizar el titulo de la barra superior.
+ // =============================================================================
+#define WINDOW_TITLE     L"Robot Aspirador - Calculador de Superficie (C++ Multithreading)"
+#define WINDOW_CLASS     L"RobotAspiradorClass"
+
+ // =============================================================================
  // ESTRUCTURAS DE DATOS
  // =============================================================================
 
  /**
-  * Estructura que representa una zona de la habitaciÛn.
-  * Cada zona tiene un nombre, largo, ancho y ·rea calculada.
+  * Estructura que representa una zona de la habitaci√≥n.
+  * Cada zona tiene un nombre, largo, ancho y √°rea calculada.
   */
 struct Zona {
     std::string nombre;
-    double largo;   // en centÌmetros
-    double ancho;   // en centÌmetros
-    double area;    // en centÌmetros cuadrados (calculada)
-    int threadId;   // ID del hilo que calculÛ esta zona
+    double largo;   // en cent√≠metros
+    double ancho;   // en cent√≠metros
+    double area;    // en cent√≠metros cuadrados (calculada)
+    int threadId;   // ID del hilo que calcul√≥ esta zona
 
     Zona(const std::string& n, double l, double a)
         : nombre(n), largo(l), ancho(a), area(0.0), threadId(0) {
@@ -58,12 +65,12 @@ struct Zona {
 };
 
 /**
- * Estructura que almacena los resultados del c·lculo.
+ * Estructura que almacena los resultados del c√°lculo.
  */
 struct ResultadoCalculo {
     std::vector<Zona> zonas;
     double superficieTotal;
-    double tasaLimpieza;        // cm≤/segundo
+    double tasaLimpieza;        // cm¬≤/segundo
     double tiempoSegundos;
     double tiempoMinutos;
     double tiempoHoras;
@@ -111,17 +118,17 @@ static std::mutex g_mutex;
 #define COLOR_BORDE         RGB(88, 91, 112)
 
 // =============================================================================
-// FUNCIONES DE C¡LCULO DISTRIBUIDO
+// FUNCIONES DE C√ÅLCULO DISTRIBUIDO
 // =============================================================================
 
 /**
- * FunciÛn que calcula el ·rea de una zona.
- * DiseÒada para ejecutarse en un hilo independiente.
- * Incluye un pequeÒo delay para simular procesamiento distribuido.
+ * Funci√≥n que calcula el √°rea de una zona.
+ * Dise√±ada para ejecutarse en un hilo independiente.
+ * Incluye un peque√±o delay para simular procesamiento distribuido.
  *
  * @param largo  - Largo de la zona en cm
  * @param ancho  - Ancho de la zona en cm
- * @return El ·rea calculada (largo * ancho) en cm≤
+ * @return El √°rea calculada (largo * ancho) en cm¬≤
  */
 double calcularArea(double largo, double ancho) {
     // Simular trabajo de procesamiento distribuido
@@ -130,13 +137,13 @@ double calcularArea(double largo, double ancho) {
 }
 
 /**
- * FunciÛn que calcula el ·rea de una zona y devuelve un par con
- * el Ìndice de la zona y el ·rea calculada, junto con el ID del hilo.
+ * Funci√≥n que calcula el √°rea de una zona y devuelve un par con
+ * el √≠ndice de la zona y el √°rea calculada, junto con el ID del hilo.
  *
- * @param indice - Õndice de la zona en el vector
+ * @param indice - √çndice de la zona en el vector
  * @param largo  - Largo de la zona en cm
  * @param ancho  - Ancho de la zona en cm
- * @return Par (Ìndice, ·rea calculada)
+ * @return Par (√≠ndice, √°rea calculada)
  */
 std::pair<int, double> calcularAreaConIndice(int indice, double largo, double ancho) {
     double area = calcularArea(largo, ancho);
@@ -144,29 +151,33 @@ std::pair<int, double> calcularAreaConIndice(int indice, double largo, double an
 }
 
 /**
- * FunciÛn principal de c·lculo distribuido.
- * Lanza un hilo (std::async) por cada zona para calcular su ·rea
+ * Funci√≥n principal de c√°lculo distribuido.
+ * Lanza un hilo (std::async) por cada zona para calcular su √°rea
  * de forma concurrente. Luego recopila los resultados y calcula
  * la superficie total y el tiempo estimado de limpieza.
  *
- * @param tasaLimpieza - Tasa de limpieza del robot en cm≤/segundo
+ * @param tasaLimpieza - Tasa de limpieza del robot en cm¬≤/segundo
  */
 void ejecutarCalculoDistribuido(double tasaLimpieza) {
-    // Inicializar las zonas con los datos del enunciado
+    // Inicializar las zonas con los datos del enunciado (seg√∫n la foto)
+    // Zona 1: franja superior, 500 cm x 150 cm
+    // Zona 2: franja izquierda (debajo de Z1), 101 cm x 480 cm
+    // Zona 3: bloque derecho (al lado de Z2), 309 cm x 480 cm
+    // Zona 4: franja inferior, 500 cm x 220 cm
     std::vector<Zona> zonas;
     zonas.emplace_back("Zona 1", 500.0, 150.0);
-    zonas.emplace_back("Zona 2", 480.0, 101.0);
+    zonas.emplace_back("Zona 2", 101.0, 480.0);
     zonas.emplace_back("Zona 3", 309.0, 480.0);
-    zonas.emplace_back("Zona 4", 90.0, 220.0);
+    zonas.emplace_back("Zona 4", 500.0, 220.0);
 
     // =========================================================================
-    // C¡LCULO DISTRIBUIDO: Lanzar un hilo por cada zona usando std::async
-    // Cada std::async crea un hilo independiente que calcula el ·rea de una zona
+    // C√ÅLCULO DISTRIBUIDO: Lanzar un hilo por cada zona usando std::async
+    // Cada std::async crea un hilo independiente que calcula el √°rea de una zona
     // =========================================================================
     std::vector<std::future<std::pair<int, double>>> futuros;
 
     for (int i = 0; i < (int)zonas.size(); i++) {
-        // Lanzar c·lculo asÌncrono para cada zona
+        // Lanzar c√°lculo as√≠ncrono para cada zona
         // std::launch::async garantiza que se ejecute en un hilo separado
         futuros.push_back(
             std::async(std::launch::async, calcularAreaConIndice,
@@ -175,7 +186,7 @@ void ejecutarCalculoDistribuido(double tasaLimpieza) {
     }
 
     // =========================================================================
-    // SINCRONIZACI”N: Recopilar resultados de todos los hilos
+    // SINCRONIZACI√ìN: Recopilar resultados de todos los hilos
     // =========================================================================
     double superficieTotal = 0.0;
 
@@ -190,7 +201,7 @@ void ejecutarCalculoDistribuido(double tasaLimpieza) {
     }
 
     // =========================================================================
-    // C¡LCULO DEL TIEMPO DE LIMPIEZA
+    // C√ÅLCULO DEL TIEMPO DE LIMPIEZA
     // Tiempo = Superficie Total / Tasa de Limpieza
     // =========================================================================
     double tiempoSeg = superficieTotal / tasaLimpieza;
@@ -198,7 +209,7 @@ void ejecutarCalculoDistribuido(double tasaLimpieza) {
     double tiempoHrs = tiempoMin / 60.0;
 
     // =========================================================================
-    // ALMACENAR RESULTADOS (con protecciÛn de mutex)
+    // ALMACENAR RESULTADOS (con protecci√≥n de mutex)
     // =========================================================================
     {
         std::lock_guard<std::mutex> lock(g_mutex);
@@ -220,7 +231,7 @@ void ejecutarCalculoDistribuido(double tasaLimpieza) {
 // =============================================================================
 
 /**
- * Dibuja un rect·ngulo redondeado relleno.
+ * Dibuja un rect√°ngulo redondeado relleno.
  */
 void dibujarRectRedondeado(HDC hdc, int x, int y, int w, int h,
     COLORREF colorFondo, COLORREF colorBorde, int radio = 8) {
@@ -278,7 +289,7 @@ void dibujarTextoCentrado(HDC hdc, const std::string& texto, int x, int y, int a
 }
 
 /**
- * Formatea un n˙mero double a string con separador de miles.
+ * Formatea un n√∫mero double a string con separador de miles.
  */
 std::string formatearNumero(double num, int decimales = 0) {
     std::ostringstream oss;
@@ -305,59 +316,59 @@ std::string formatearNumero(double num, int decimales = 0) {
 }
 
 // =============================================================================
-// FUNCI”N DE DIBUJO DE LA VISTA DE PLANTA DE LA HABITACI”N
+// FUNCI√ìN DE DIBUJO DE LA VISTA DE PLANTA DE LA HABITACI√ìN
 // =============================================================================
 
 /**
- * Dibuja una representaciÛn visual (vista de planta) de las zonas
- * de la habitaciÛn, mostrando las zonas como rect·ngulos a escala.
+ * Dibuja una representaci√≥n visual (vista de planta) de las zonas
+ * de la habitaci√≥n, mostrando las zonas como rect√°ngulos a escala.
  */
 void dibujarVistaPlanta(HDC hdc, int panelX, int panelY, int panelW, int panelH) {
     // Panel de fondo
     dibujarRectRedondeado(hdc, panelX, panelY, panelW, panelH,
         COLOR_PANEL, COLOR_BORDE, 10);
 
-    // TÌtulo
+    // T√≠tulo
     dibujarTextoCentrado(hdc, "Vista de Planta de la Habitacion",
         panelX, panelY + 10, panelW, COLOR_TITULO, 16, true);
 
-    // ¡rea de dibujo dentro del panel
+    // √Årea de dibujo dentro del panel
     int drawX = panelX + 20;
     int drawY = panelY + 40;
     int drawW = panelW - 40;
-    int drawH = panelH - 60;
+    int drawH = panelH - 70;
 
-    // Dimensiones reales de la habitaciÛn (aproximadas basadas en las zonas)
-    // La habitaciÛn parece ser de ~590 cm x 480 cm con un mueble en una esquina
-    double habLargo = 590.0;  // cm
-    double habAncho = 480.0;  // cm
+    double habAncho = 560.0;
+    double habAlto = 690.0;
 
-    // Escala para ajustar al ·rea de dibujo
-    double escalaX = drawW / habLargo;
-    double escalaY = drawH / habAncho;
+    // Escala para ajustar al √°rea de dibujo
+    double escalaX = drawW / habAncho;
+    double escalaY = drawH / habAlto;
     double escala = (escalaX < escalaY) ? escalaX : escalaY;
 
     // Centrar el dibujo
-    int offsetX = drawX + (int)((drawW - habLargo * escala) / 2);
-    int offsetY = drawY + (int)((drawH - habAncho * escala) / 2);
+    int offsetX = drawX + (int)((drawW - habAncho * escala) / 2);
+    int offsetY = drawY + (int)((drawH - habAlto * escala) / 2);
 
-    // Dibujar contorno de la habitaciÛn completa
+    // Dibujar contorno de la habitaci√≥n completa
     HPEN hPenHab = CreatePen(PS_DASH, 1, COLOR_TEXTO_DIM);
     HBRUSH hBrushHab = CreateSolidBrush(RGB(35, 35, 55));
-    SelectObject(hdc, hPenHab);
-    SelectObject(hdc, hBrushHab);
+    HBRUSH hOldBrHab = (HBRUSH)SelectObject(hdc, hBrushHab);
+    HPEN hOldPenHab = (HPEN)SelectObject(hdc, hPenHab);
     Rectangle(hdc, offsetX, offsetY,
-        offsetX + (int)(habLargo * escala),
-        offsetY + (int)(habAncho * escala));
+        offsetX + (int)(habAncho * escala),
+        offsetY + (int)(habAlto * escala));
+    SelectObject(hdc, hOldBrHab);
+    SelectObject(hdc, hOldPenHab);
     DeleteObject(hPenHab);
     DeleteObject(hBrushHab);
 
     // Colores para cada zona
     COLORREF coloresZona[] = {
-        RGB(137, 180, 250),   // Zona 1 - Azul
-        RGB(166, 227, 161),   // Zona 2 - Verde
-        RGB(249, 226, 175),   // Zona 3 - Amarillo
-        RGB(243, 139, 168)    // Zona 4 - Rosa
+        RGB(137, 180, 250),
+        RGB(166, 227, 161),
+        RGB(249, 226, 175),
+        RGB(243, 139, 168)
     };
     COLORREF coloresZonaDim[] = {
         RGB(80, 110, 170),
@@ -366,58 +377,57 @@ void dibujarVistaPlanta(HDC hdc, int panelX, int panelY, int panelW, int panelH)
         RGB(170, 80, 100)
     };
 
-    // Posiciones aproximadas de las zonas en la habitaciÛn (x, y en cm)
-    // Basado en la distribuciÛn tÌpica con un mueble bloqueando una esquina
-    struct ZonaPos { double x, y, largo, ancho; };
+    struct ZonaPos { double x, y, ancho, alto; };
     ZonaPos posiciones[] = {
-        {  0,   0, 500, 150},   // Zona 1 - Franja superior
-        {  0, 150, 480, 101},   // Zona 2 - Franja siguiente
-        {  0, 251, 309, 229},   // Zona 3 - Bloque inferior izquierdo  
-        {500,   0,  90, 220}    // Zona 4 - Bloque derecho superior
+        {   0,   0, 500, 150},
+        {   0, 150, 101, 480},
+        { 251, 150, 309, 480},
+        {   0, 470, 500, 220}
     };
 
     // Dibujar cada zona
     for (int i = 0; i < 4; i++) {
         int zx = offsetX + (int)(posiciones[i].x * escala);
         int zy = offsetY + (int)(posiciones[i].y * escala);
-        int zw = (int)(posiciones[i].largo * escala);
-        int zh = (int)(posiciones[i].ancho * escala);
+        int zw = (int)(posiciones[i].ancho * escala);
+        int zh = (int)(posiciones[i].alto * escala);
 
-        // Relleno semitransparente
         HBRUSH hBrZ = CreateSolidBrush(coloresZonaDim[i]);
         HPEN hPenZ = CreatePen(PS_SOLID, 2, coloresZona[i]);
-        SelectObject(hdc, hBrZ);
-        SelectObject(hdc, hPenZ);
+        HBRUSH hOldBrZ = (HBRUSH)SelectObject(hdc, hBrZ);
+        HPEN hOldPenZ = (HPEN)SelectObject(hdc, hPenZ);
         Rectangle(hdc, zx, zy, zx + zw, zy + zh);
+        SelectObject(hdc, hOldBrZ);
+        SelectObject(hdc, hOldPenZ);
         DeleteObject(hBrZ);
         DeleteObject(hPenZ);
 
-        // Etiqueta de la zona
         std::string label = "Z" + std::to_string(i + 1);
         dibujarTextoCentrado(hdc, label, zx, zy + zh / 2 - 8, zw,
             coloresZona[i], 14, true);
     }
 
-    // Dibujar el mueble (zona no accesible)
-    int muebleX = offsetX + (int)(309 * escala);
-    int muebleY = offsetY + (int)(251 * escala);
-    int muebleW = (int)((590 - 309) * escala);
-    int muebleH = (int)((480 - 251) * escala);
+    // Mueble
+    int muebleX = offsetX + (int)(101 * escala);
+    int muebleY = offsetY + (int)(150 * escala);
+    int muebleW = (int)(150 * escala);
+    int muebleH = (int)(320 * escala);
 
     HBRUSH hBrMueble = CreateSolidBrush(RGB(80, 73, 69));
     HPEN hPenMueble = CreatePen(PS_SOLID, 2, RGB(120, 110, 100));
-    SelectObject(hdc, hBrMueble);
-    SelectObject(hdc, hPenMueble);
+    HBRUSH hOldBrM = (HBRUSH)SelectObject(hdc, hBrMueble);
+    HPEN hOldPenM = (HPEN)SelectObject(hdc, hPenMueble);
     Rectangle(hdc, muebleX, muebleY, muebleX + muebleW, muebleY + muebleH);
+    SelectObject(hdc, hOldBrM);
+    SelectObject(hdc, hOldPenM);
     DeleteObject(hBrMueble);
     DeleteObject(hPenMueble);
 
-    // Etiqueta del mueble
     dibujarTextoCentrado(hdc, "MUEBLE", muebleX, muebleY + muebleH / 2 - 8,
-        muebleW, RGB(180, 170, 160), 12, true);
+        muebleW, RGB(180, 170, 160), 11, true);
 
     // Leyenda
-    int legY = offsetY + (int)(habAncho * escala) + 10;
+    int legY = offsetY + (int)(habAlto * escala) + 8;
     for (int i = 0; i < 4; i++) {
         int lx = drawX + i * (drawW / 4);
         HBRUSH hBrL = CreateSolidBrush(coloresZona[i]);
@@ -431,13 +441,9 @@ void dibujarVistaPlanta(HDC hdc, int panelX, int panelY, int panelW, int panelH)
 }
 
 // =============================================================================
-// FUNCI”N PRINCIPAL DE PINTADO
+// FUNCI√ìN PRINCIPAL DE PINTADO
 // =============================================================================
 
-/**
- * Pinta toda la interfaz gr·fica en la ventana.
- * Se llama cada vez que la ventana necesita ser repintada.
- */
 void pintarVentana(HDC hdc, RECT& rect) {
     int anchoVentana = rect.right - rect.left;
     int altoVentana = rect.bottom - rect.top;
@@ -447,17 +453,13 @@ void pintarVentana(HDC hdc, RECT& rect) {
     FillRect(hdc, &rect, hBrFondo);
     DeleteObject(hBrFondo);
 
-    // =========================================================================
-    // TÕTULO PRINCIPAL
-    // =========================================================================
+    // T√çTULO PRINCIPAL
     dibujarTextoCentrado(hdc, "ROBOT ASPIRADOR - Calculador de Superficie",
         0, 15, anchoVentana, COLOR_TITULO, 24, true);
     dibujarTextoCentrado(hdc, "Calculo distribuido con hilos concurrentes",
         0, 45, anchoVentana, COLOR_TEXTO_DIM, 13, false);
 
-    // =========================================================================
     // PANEL IZQUIERDO: DATOS DE LAS ZONAS
-    // =========================================================================
     int panelIzqX = 20;
     int panelIzqY = 80;
     int panelIzqW = anchoVentana / 2 - 30;
@@ -469,7 +471,6 @@ void pintarVentana(HDC hdc, RECT& rect) {
     dibujarTexto(hdc, "DATOS DE LAS ZONAS", panelIzqX + 15, panelIzqY + 12,
         COLOR_TITULO, 15, true);
 
-    // Encabezados de tabla
     int tabX = panelIzqX + 15;
     int tabY = panelIzqY + 40;
     dibujarTexto(hdc, "Zona", tabX, tabY, COLOR_TEXTO_DIM, 13, true);
@@ -477,21 +478,18 @@ void pintarVentana(HDC hdc, RECT& rect) {
     dibujarTexto(hdc, "Ancho (cm)", tabX + 210, tabY, COLOR_TEXTO_DIM, 13, true);
     dibujarTexto(hdc, "Area (cm2)", tabX + 320, tabY, COLOR_TEXTO_DIM, 13, true);
 
-    // LÌnea separadora
     HPEN hPenSep = CreatePen(PS_SOLID, 1, COLOR_BORDE);
     SelectObject(hdc, hPenSep);
     MoveToEx(hdc, tabX, tabY + 20, NULL);
     LineTo(hdc, tabX + panelIzqW - 30, tabY + 20);
     DeleteObject(hPenSep);
 
-    // Datos de las zonas (siempre mostrar los datos base)
     COLORREF coloresZ[] = { COLOR_ZONA1, COLOR_ZONA2, COLOR_ZONA3, COLOR_ZONA4 };
-    double datosZonas[][2] = { {500,150}, {480,101}, {309,480}, {90,220} };
+    double datosZonas[][2] = { {500,150}, {101,480}, {309,480}, {500,220} };
 
     for (int i = 0; i < 4; i++) {
         int fY = tabY + 28 + i * 35;
 
-        // Indicador de color
         HBRUSH hBrInd = CreateSolidBrush(coloresZ[i]);
         HBRUSH hOldBr = (HBRUSH)SelectObject(hdc, hBrInd);
         HPEN hPenN = CreatePen(PS_SOLID, 1, coloresZ[i]);
@@ -511,7 +509,6 @@ void pintarVentana(HDC hdc, RECT& rect) {
         dibujarTexto(hdc, ossL.str(), tabX + 120, fY, COLOR_TEXTO, 14, false);
         dibujarTexto(hdc, ossA.str(), tabX + 230, fY, COLOR_TEXTO, 14, false);
 
-        // ¡rea (si ya se calculÛ)
         std::lock_guard<std::mutex> lock(g_mutex);
         if (g_resultado.calculado && i < (int)g_resultado.zonas.size()) {
             std::string areaStr = formatearNumero(g_resultado.zonas[i].area);
@@ -522,9 +519,7 @@ void pintarVentana(HDC hdc, RECT& rect) {
         }
     }
 
-    // =========================================================================
     // PANEL DERECHO: VISTA DE PLANTA
-    // =========================================================================
     int panelDerX = anchoVentana / 2 + 10;
     int panelDerY = 80;
     int panelDerW = anchoVentana / 2 - 30;
@@ -532,9 +527,7 @@ void pintarVentana(HDC hdc, RECT& rect) {
 
     dibujarVistaPlanta(hdc, panelDerX, panelDerY, panelDerW, panelDerH);
 
-    // =========================================================================
     // PANEL INFERIOR: RESULTADOS
-    // =========================================================================
     int panelResX = 20;
     int panelResY = 320;
     int panelResW = anchoVentana - 40;
@@ -549,13 +542,11 @@ void pintarVentana(HDC hdc, RECT& rect) {
     {
         std::lock_guard<std::mutex> lock(g_mutex);
         if (g_resultado.calculado) {
-            // Superficie total
             int resY = panelResY + 45;
             int col1X = panelResX + 30;
             int col2X = panelResX + panelResW / 3 + 10;
             int col3X = panelResX + 2 * panelResW / 3 + 10;
 
-            // Tarjeta: Superficie Total
             int cardW = panelResW / 3 - 30;
             dibujarRectRedondeado(hdc, col1X - 10, resY - 5, cardW, 90,
                 COLOR_PANEL_ZONA, COLOR_BORDE, 8);
@@ -564,14 +555,12 @@ void pintarVentana(HDC hdc, RECT& rect) {
             std::string supStr = formatearNumero(g_resultado.superficieTotal) + " cm2";
             dibujarTextoCentrado(hdc, supStr, col1X - 10, resY + 22, cardW,
                 COLOR_ACENTO, 20, true);
-            // En metros cuadrados
             double supM2 = g_resultado.superficieTotal / 10000.0;
             std::ostringstream ossM2;
             ossM2 << std::fixed << std::setprecision(2) << supM2 << " m2";
             dibujarTextoCentrado(hdc, ossM2.str(), col1X - 10, resY + 50, cardW,
                 COLOR_TEXTO_DIM, 13, false);
 
-            // Tarjeta: Tasa de Limpieza
             dibujarRectRedondeado(hdc, col2X - 10, resY - 5, cardW, 90,
                 COLOR_PANEL_ZONA, COLOR_BORDE, 8);
             dibujarTextoCentrado(hdc, "Tasa de Limpieza", col2X - 10, resY, cardW,
@@ -582,7 +571,6 @@ void pintarVentana(HDC hdc, RECT& rect) {
             dibujarTextoCentrado(hdc, "Velocidad del robot", col2X - 10, resY + 50, cardW,
                 COLOR_TEXTO_DIM, 13, false);
 
-            // Tarjeta: Tiempo Estimado
             dibujarRectRedondeado(hdc, col3X - 10, resY - 5, cardW, 90,
                 COLOR_PANEL_ZONA, COLOR_BORDE, 8);
             dibujarTextoCentrado(hdc, "Tiempo Estimado", col3X - 10, resY, cardW,
@@ -606,12 +594,10 @@ void pintarVentana(HDC hdc, RECT& rect) {
             dibujarTextoCentrado(hdc, ossSeg.str(), col3X - 10, resY + 50, cardW,
                 COLOR_TEXTO_DIM, 13, false);
 
-            // Detalle de hilos
             int detY = resY + 100;
             dibujarTexto(hdc, "Calculo realizado con 4 hilos concurrentes (std::async + std::future)",
                 panelResX + 30, detY, COLOR_TEXTO_DIM, 12, false);
 
-            // FÛrmula
             std::ostringstream ossFormula;
             ossFormula << "Tiempo = Superficie Total / Tasa = "
                 << formatearNumero(g_resultado.superficieTotal)
@@ -620,10 +606,8 @@ void pintarVentana(HDC hdc, RECT& rect) {
                 << g_resultado.tiempoSegundos << " seg";
             dibujarTexto(hdc, ossFormula.str(), panelResX + 30, detY + 18,
                 COLOR_TEXTO_DIM, 12, false);
-
         }
         else {
-            // Mensaje antes de calcular
             dibujarTextoCentrado(hdc, "Presiona 'Calcular' para iniciar el calculo distribuido",
                 panelResX, panelResY + 80, panelResW,
                 COLOR_TEXTO_DIM, 16, false);
@@ -633,9 +617,7 @@ void pintarVentana(HDC hdc, RECT& rect) {
         }
     }
 
-    // =========================================================================
-    // PIE DE P¡GINA
-    // =========================================================================
+    // PIE DE P√ÅGINA
     dibujarTextoCentrado(hdc, "Robot Aspirador v1.0 | C++ Multithreading | Win32 GUI",
         0, altoVentana - 25, anchoVentana, COLOR_TEXTO_DIM, 11, false);
 }
@@ -647,29 +629,22 @@ void pintarVentana(HDC hdc, RECT& rect) {
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
     case WM_CREATE: {
-        // Crear controles de la interfaz
-
-        // Label para tasa de limpieza
         g_hLabelTasa = CreateWindowA("STATIC", "Tasa (cm2/s):",
             WS_CHILD | WS_VISIBLE | SS_RIGHT,
             20, 540, 120, 25, hWnd, NULL, NULL, NULL);
 
-        // Campo de texto para tasa de limpieza
         g_hEditTasa = CreateWindowExA(0, "EDIT", "1000",
             WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
             145, 538, 100, 28, hWnd, (HMENU)ID_EDIT_TASA, NULL, NULL);
 
-        // BotÛn Calcular
         g_hBtnCalcular = CreateWindowA("BUTTON", "  CALCULAR  ",
             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
             260, 536, 140, 32, hWnd, (HMENU)ID_BTN_CALCULAR, NULL, NULL);
 
-        // BotÛn Limpiar resultados
         g_hBtnLimpiar = CreateWindowA("BUTTON", "  LIMPIAR  ",
             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
             410, 536, 120, 32, hWnd, (HMENU)ID_BTN_LIMPIAR, NULL, NULL);
 
-        // Establecer fuente para los controles
         HFONT hFont = CreateFontA(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
             DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
             CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
@@ -698,19 +673,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     case WM_COMMAND: {
         switch (LOWORD(wParam)) {
         case ID_BTN_CALCULAR: {
-            // Leer tasa de limpieza del campo de texto
             char buffer[64];
             GetWindowTextA(g_hEditTasa, buffer, sizeof(buffer));
             double tasa = atof(buffer);
             if (tasa <= 0) tasa = 1000.0;
 
-            // Deshabilitar botÛn mientras calcula
             EnableWindow(g_hBtnCalcular, FALSE);
 
-            // Lanzar c·lculo en un hilo separado para no bloquear la GUI
             std::thread t([tasa]() {
                 ejecutarCalculoDistribuido(tasa);
-                // Re-habilitar botÛn al terminar
                 EnableWindow(g_hBtnCalcular, TRUE);
                 });
             t.detach();
@@ -730,20 +701,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        // Doble buffer para evitar parpadeo
         RECT rect;
         GetClientRect(hWnd, &rect);
         HDC hdcMem = CreateCompatibleDC(hdc);
         HBITMAP hBmp = CreateCompatibleBitmap(hdc, rect.right, rect.bottom);
         HBITMAP hOldBmp = (HBITMAP)SelectObject(hdcMem, hBmp);
 
-        // Pintar en el buffer
         pintarVentana(hdcMem, rect);
 
-        // Copiar buffer a pantalla
         BitBlt(hdc, 0, 0, rect.right, rect.bottom, hdcMem, 0, 0, SRCCOPY);
 
-        // Limpiar
         SelectObject(hdcMem, hOldBmp);
         DeleteObject(hBmp);
         DeleteDC(hdcMem);
@@ -753,14 +720,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     }
 
     case WM_ERASEBKGND:
-        return 1; // Evitar parpadeo
+        return 1;
 
     case WM_DESTROY:
         PostQuitMessage(0);
         return 0;
 
     default:
-        return DefWindowProc(hWnd, msg, wParam, lParam);
+        return DefWindowProcW(hWnd, msg, wParam, lParam);
     }
 }
 
@@ -768,24 +735,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 // PUNTO DE ENTRADA PRINCIPAL
 // =============================================================================
 
-/**
- * WinMain: Punto de entrada para aplicaciones Windows con GUI.
- */
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPSTR lpCmdLine, int nCmdShow) {
-    // Registrar clase de ventana
-    WNDCLASSEXA wc = {};
-    wc.cbSize = sizeof(WNDCLASSEXA);
+
+    // =========================================================================
+    // Usar WNDCLASSEXW (Unicode) para que el titulo se muestre correctamente
+    // =========================================================================
+    WNDCLASSEXW wc = {};
+    wc.cbSize = sizeof(WNDCLASSEXW);
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = CreateSolidBrush(COLOR_FONDO);
-    wc.lpszClassName = "RobotAspiradorClass";
+    wc.lpszClassName = WINDOW_CLASS;
     wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 
-    if (!RegisterClassExA(&wc)) {
-        MessageBoxA(NULL, "Error al registrar la clase de ventana", "Error", MB_OK);
+    if (!RegisterClassExW(&wc)) {
+        MessageBoxW(NULL, L"Error al registrar la clase de ventana", L"Error", MB_OK);
         return 1;
     }
 
@@ -796,17 +763,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     int posX = (screenW - winW) / 2;
     int posY = (screenH - winH) / 2;
 
-    g_hWnd = CreateWindowExA(
+    // =========================================================================
+    // Usar CreateWindowExW (Unicode) con WINDOW_TITLE para el titulo
+    // =========================================================================
+    g_hWnd = CreateWindowExW(
         0,
-        "RobotAspiradorClass",
-        "Robot Aspirador - Calculador de Superficie (C++ Multithreading)",
+        WINDOW_CLASS,
+        WINDOW_TITLE,
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
         posX, posY, winW, winH,
         NULL, NULL, hInstance, NULL
     );
 
     if (!g_hWnd) {
-        MessageBoxA(NULL, "Error al crear la ventana", "Error", MB_OK);
+        MessageBoxW(NULL, L"Error al crear la ventana", L"Error", MB_OK);
         return 1;
     }
 
@@ -822,11 +792,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     return (int)msg.wParam;
 }
 
-/**
- * main(): Punto de entrada alternativo para cuando el proyecto
- * esta configurado como Aplicacion de Consola en Visual Studio.
- * Simplemente redirige a WinMain.
- */
 int main() {
     return WinMain(GetModuleHandle(NULL), NULL, GetCommandLineA(), SW_SHOWNORMAL);
 }

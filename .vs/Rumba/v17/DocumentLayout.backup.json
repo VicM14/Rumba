@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\karin\\source\\repos\\Rumba1\\",
+  "WorkspaceRootPath": "C:\\Users\\karin\\source\\repos\\Rumba2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\karin\\source\\repos\\Rumba1\\Rumba\\Rumba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\karin\\source\\repos\\Rumba2\\Rumba\\Rumba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Rumba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -14,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -25,14 +25,26 @@
               "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{131369f2-062d-44a2-8671-91ff31efb4f4}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Rumba.cpp",
-              "DocumentMoniker": "C:\\Users\\karin\\source\\repos\\Rumba1\\Rumba\\Rumba.cpp",
+              "DocumentMoniker": "C:\\Users\\karin\\source\\repos\\Rumba2\\Rumba\\Rumba.cpp",
               "RelativeDocumentMoniker": "Rumba\\Rumba.cpp",
-              "ToolTip": "C:\\Users\\karin\\source\\repos\\Rumba1\\Rumba\\Rumba.cpp",
+              "ToolTip": "C:\\Users\\karin\\source\\repos\\Rumba2\\Rumba\\Rumba.cpp",
               "RelativeToolTip": "Rumba\\Rumba.cpp",
-              "ViewState": "AgIAAOUAAAAAAAAAAAAAwA4BAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAHsDAAAAAAAAAAAAAHsDAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-03-05T15:51:15.158Z",
               "EditorCaption": ""
