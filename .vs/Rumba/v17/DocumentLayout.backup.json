@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\karin\\source\\repos\\Rumba2\\",
+  "WorkspaceRootPath": "C:\\Users\\karin.ibarracano\\source\\repos\\Rumba\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\karin\\source\\repos\\Rumba2\\Rumba\\Rumba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\karin.ibarracano\\source\\repos\\Rumba\\Rumba\\Rumba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Rumba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -40,11 +40,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Rumba.cpp",
-              "DocumentMoniker": "C:\\Users\\karin\\source\\repos\\Rumba2\\Rumba\\Rumba.cpp",
+              "DocumentMoniker": "C:\\Users\\karin.ibarracano\\source\\repos\\Rumba\\Rumba\\Rumba.cpp",
               "RelativeDocumentMoniker": "Rumba\\Rumba.cpp",
-              "ToolTip": "C:\\Users\\karin\\source\\repos\\Rumba2\\Rumba\\Rumba.cpp",
+              "ToolTip": "C:\\Users\\karin.ibarracano\\source\\repos\\Rumba\\Rumba\\Rumba.cpp",
               "RelativeToolTip": "Rumba\\Rumba.cpp",
-              "ViewState": "AgIAAHsDAAAAAAAAAAAAAHsDAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAPQCAAAAAAAAAAAiwBwDAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-03-05T15:51:15.158Z",
               "EditorCaption": ""
