@@ -13,10 +13,57 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de origen\ROBOT_ASPIRADOR_PROYECTO">
+      <UniqueIdentifier>{0b9ae0c0-3f9d-4623-a27c-bc8b6c676d17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include">
+      <UniqueIdentifier>{0addc42b-11fa-4cb4-b0ed-ac52a030013c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\src">
+      <UniqueIdentifier>{fb8379a4-2fa6-4151-942a-9da21718a901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include\core">
+      <UniqueIdentifier>{bdb39a8c-405b-44e0-9c32-839de85c1370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include\ui">
+      <UniqueIdentifier>{8b743fd8-5fec-4b1e-a72c-7eacce798b52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\src\core">
+      <UniqueIdentifier>{81ba8789-82fc-41a1-a1a5-46f8bd06f86f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\src\ui">
+      <UniqueIdentifier>{6e652211-7020-4020-b86b-a1d9bbd43709}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Rumba.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\src</Filter>
     </ClCompile>
+    <ClCompile Include="Robot.cpp">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScreen.cpp">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\src\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="SplashScreen.cpp">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\src\ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DataStructures.h">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Robot.h">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScreen.h">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashScreen.h">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme.h">
+      <Filter>Archivos de origen\ROBOT_ASPIRADOR_PROYECTO\include\ui</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
