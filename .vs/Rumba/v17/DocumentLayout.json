@@ -1,42 +1,45 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Usuario\\source\\repos\\Rumba\\",
+  "WorkspaceRootPath": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Robot.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Robot.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Robot.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Robot.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\MainScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\DataStructures.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\DataStructures.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\MainScreen.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\MainScreen.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\SplashScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Theme.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Theme.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\vector||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Robot.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Robot.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Robot.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Robot.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\DataStructures.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\DataStructures.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\SplashScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\SplashScreen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\SplashScreen.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\SplashScreen.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\SplashScreen.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Theme.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D8B4CEA-87D6-47C9-AEF3-5910F27EF38E}|Rumba\\Rumba.vcxproj|solutionrelative:Rumba\\Theme.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,8 +49,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 7,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -62,63 +81,24 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Robot.cpp",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Robot.cpp",
-              "RelativeDocumentMoniker": "Rumba\\Robot.cpp",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Robot.cpp",
-              "RelativeToolTip": "Rumba\\Robot.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-04-07T19:06:02.974Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\main.cpp",
-              "RelativeDocumentMoniker": "Rumba\\main.cpp",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\main.cpp*",
-              "RelativeToolTip": "Rumba\\main.cpp*",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAYwH8AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-04-07T19:05:50.788Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Robot.h",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Robot.h",
-              "RelativeDocumentMoniker": "Rumba\\Robot.h",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Robot.h",
-              "RelativeToolTip": "Rumba\\Robot.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-07T19:07:00.881Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "MainScreen.cpp",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp",
               "RelativeDocumentMoniker": "Rumba\\MainScreen.cpp",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp",
-              "RelativeToolTip": "Rumba\\MainScreen.cpp",
-              "ViewState": "AgIAAHABAAAAAAAAAAAYwH8BAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp*",
+              "RelativeToolTip": "Rumba\\MainScreen.cpp*",
+              "ViewState": "AgIAAJICAAAAAAAAAAAswLMCAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-04-07T19:06:15.871Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "DataStructures.h",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\DataStructures.h",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\DataStructures.h",
               "RelativeDocumentMoniker": "Rumba\\DataStructures.h",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\DataStructures.h",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\DataStructures.h",
               "RelativeToolTip": "Rumba\\DataStructures.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
@@ -127,24 +107,89 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "MainScreen.h",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\MainScreen.h",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.h",
               "RelativeDocumentMoniker": "Rumba\\MainScreen.h",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\MainScreen.h",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.h",
               "RelativeToolTip": "Rumba\\MainScreen.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAADgAAAAAAAAAAAAswEQAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2026-04-07T19:07:13.575Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\main.cpp",
+              "RelativeDocumentMoniker": "Rumba\\main.cpp",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\main.cpp",
+              "RelativeToolTip": "Rumba\\main.cpp",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAswGoAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-04-07T19:05:50.788Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Theme.h",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Theme.h",
+              "RelativeDocumentMoniker": "Rumba\\Theme.h",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Theme.h",
+              "RelativeToolTip": "Rumba\\Theme.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-04-07T19:07:37.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "vector",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\vector",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\vector",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\vector",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\vector",
+              "ViewState": "AgIAAHYHAAAAAAAAAAAiwI4HAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-08T12:47:17.288Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "Robot.h",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Robot.h",
+              "RelativeDocumentMoniker": "Rumba\\Robot.h",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Robot.h",
+              "RelativeToolTip": "Rumba\\Robot.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-04-07T19:07:00.881Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Robot.cpp",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Robot.cpp",
+              "RelativeDocumentMoniker": "Rumba\\Robot.cpp",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\Robot.cpp",
+              "RelativeToolTip": "Rumba\\Robot.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-04-07T19:06:02.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "SplashScreen.cpp",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\SplashScreen.cpp",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\SplashScreen.cpp",
               "RelativeDocumentMoniker": "Rumba\\SplashScreen.cpp",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\SplashScreen.cpp",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\SplashScreen.cpp",
               "RelativeToolTip": "Rumba\\SplashScreen.cpp",
               "ViewState": "AgIAAEgAAAAAAAAAAAAYwFgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
@@ -153,28 +198,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "SplashScreen.h",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\SplashScreen.h",
+              "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\SplashScreen.h",
               "RelativeDocumentMoniker": "Rumba\\SplashScreen.h",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\SplashScreen.h",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\SplashScreen.h",
               "RelativeToolTip": "Rumba\\SplashScreen.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2026-04-07T19:07:26.029Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Theme.h",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Theme.h",
-              "RelativeDocumentMoniker": "Rumba\\Theme.h",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Rumba\\Rumba\\Theme.h",
-              "RelativeToolTip": "Rumba\\Theme.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-07T19:07:37.887Z",
               "EditorCaption": ""
             }
           ]
