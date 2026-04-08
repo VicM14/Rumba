@@ -9,11 +9,13 @@
 
 struct RumbaState {
     double xPct, yPct;
-    double dxPct, dyPct;
+    double speedPct;
+    int dirX;
     std::vector<POINT> trail;
     bool active;
+    bool finished;
 
-    RumbaState() : xPct(0.5), yPct(0.5), dxPct(0.02), dyPct(0.03), active(false) {}
+    RumbaState() : xPct(0.05), yPct(0.05), speedPct(0.02), dirX(1), active(false), finished(false) {}
 };
 
 class MainScreen {
@@ -37,6 +39,7 @@ private:
     void DrawZonesPanel(HDC hdc);
     void DrawResultsPanel(HDC hdc, int panelResX, int panelResY, int panelResW, int panelResH);
     void DrawRoomPlan(HDC hdc, int panelX, int panelY, int panelW, int panelH);
+    void DrawRobotSelectionScreen(HDC hdc, const RECT& clientRect);
 
     HINSTANCE m_hInstance;
     HWND m_hWnd;
@@ -47,13 +50,19 @@ private:
     std::mutex m_mutex;
     bool m_isCalculating;
 
-    // Animación de rumbas
     RumbaState m_rumbas[4];
-    bool m_animActive; // <-- Nuevo: Mantiene la animación viva después del cálculo
-    bool m_isPaused;   // <-- Nuevo: Detiene las pelotitas momentáneamente
+    bool m_animActive;
+    bool m_isPaused;
+    bool m_allFinished;
 
-    HWND m_hBtnCalculate, m_hBtnClear, m_hBtnSelectAll, m_hBtnDeselectAll, m_hBtnPause; // <-- Nuevo: botón pausa
+    bool m_showRobotSelection;
+    int m_selectedRobotIndex;
+    int m_previewX;
+    int m_previewDir;
+
+    HWND m_hBtnCalculate, m_hBtnClear, m_hBtnSelectAll, m_hBtnDeselectAll, m_hBtnPause, m_hBtnQuit; // <-- m_hBtnQuit agregado
     HWND m_hComboRobotType;
+    HWND m_hBtnConfirmRobot;
     std::vector<HWND> m_hEditsLargo;
     std::vector<HWND> m_hEditsAncho;
     std::vector<HWND> m_hChecks;
