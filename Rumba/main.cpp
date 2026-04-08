@@ -1,7 +1,6 @@
-#include <windows.h>
-#include <memory> // Para std::unique_ptr
+﻿#include <windows.h>
+#include <memory>
 
-// Rutas directas sin carpetas
 #include "SplashScreen.h"
 #include "MainScreen.h"
 #include "Theme.h"
@@ -9,7 +8,6 @@
 enum class ScreenState { SPLASH, MAIN };
 static ScreenState g_currentScreen = ScreenState::SPLASH;
 
-// Usamos unique_ptr para cargar y descargar pantallas din�micamente
 static std::unique_ptr<SplashScreen> g_splashScreen;
 static std::unique_ptr<MainScreen> g_mainScreen;
 
@@ -37,6 +35,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     case WM_TIMER:
         if (g_currentScreen == ScreenState::SPLASH && g_splashScreen) {
             g_splashScreen->HandleTimer(wParam);
+        }
+        else if (g_currentScreen == ScreenState::MAIN && g_mainScreen) {
+            g_mainScreen->HandleTimer(wParam);
         }
         return 0;
 
@@ -73,16 +74,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 void SwitchToMainScreen() {
-    g_splashScreen.reset(); // Destruye la pantalla de carga anterior
+    g_splashScreen.reset();
     g_currentScreen = ScreenState::MAIN;
     g_mainScreen = std::make_unique<MainScreen>(g_hInstance, g_hWnd);
     g_mainScreen->CreateControls();
-    InvalidateRect(g_hWnd, NULL, TRUE); // Redibuja la ventana con la pantalla nueva
+    InvalidateRect(g_hWnd, NULL, TRUE);
 }
 
-// Reemplaza el final de main.cpp con esto:
-
-// WinMain con anotaciones de seguridad requeridas por Visual Studio
+// 📌 ESTA ES LA FUNCIÓN WINMAIN
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
     g_hInstance = hInstance;
 
@@ -100,7 +99,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         return 1;
     }
 
-    int winW = 920, winH = 600;
+    int winW = 940, winH = 750; // <-- AQUÍ SE AUMENTÓ EL ALTO (Para dar espacio a los botones)
     int posX = (GetSystemMetrics(SM_CXSCREEN) - winW) / 2;
     int posY = (GetSystemMetrics(SM_CYSCREEN) - winH) / 2;
 
@@ -121,8 +120,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     return (int)msg.wParam;
 }
 
-// ESTO SOLUCIONA EL "EXTERNO SIN RESOLVER":
-// Si Visual Studio cree que es una consola, redirigimos main() hacia WinMain()
 int main() {
     return WinMain(GetModuleHandle(NULL), NULL, GetCommandLineA(), SW_SHOWNORMAL);
 }

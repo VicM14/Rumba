@@ -4,9 +4,17 @@
 #include <string>
 #include <mutex>
 
-// Rutas directas sin carpetas
 #include "DataStructures.h"
 #include "Robot.h"
+
+struct RumbaState {
+    double xPct, yPct;
+    double dxPct, dyPct;
+    std::vector<POINT> trail;
+    bool active;
+
+    RumbaState() : xPct(0.5), yPct(0.5), dxPct(0.02), dyPct(0.03), active(false) {}
+};
 
 class MainScreen {
 public:
@@ -15,6 +23,7 @@ public:
 
     void HandlePaint(HDC hdc, const RECT& clientRect);
     void HandleCommand(WPARAM wParam, LPARAM lParam);
+    void HandleTimer(WPARAM wParam);
     void CreateControls();
 
 private:
@@ -22,6 +31,7 @@ private:
     void OnClearClick();
     void OnSelectAllClick(bool select);
     void UpdateRobotFromSelection();
+    bool ReadInputsAndValidate(bool showMessages);
 
     void DrawUI(HDC hdc, const RECT& clientRect);
     void DrawZonesPanel(HDC hdc);
@@ -30,14 +40,19 @@ private:
 
     HINSTANCE m_hInstance;
     HWND m_hWnd;
-    std::vector<Zona> m_zonas; // Aquí necesita saber qué es Zona
-    std::vector<Robot> m_robots; // Aquí necesita saber qué es Robot
+    std::vector<Zona> m_zonas;
+    std::vector<Robot> m_robots;
     Robot m_robotActual;
-    ResultadoCalculo m_resultado; // Aquí necesita saber qué es ResultadoCalculo
+    ResultadoCalculo m_resultado;
     std::mutex m_mutex;
     bool m_isCalculating;
 
-    HWND m_hBtnCalculate, m_hBtnClear, m_hBtnSelectAll, m_hBtnDeselectAll;
+    // Animación de rumbas
+    RumbaState m_rumbas[4];
+    bool m_animActive; // <-- Nuevo: Mantiene la animación viva después del cálculo
+    bool m_isPaused;   // <-- Nuevo: Detiene las pelotitas momentáneamente
+
+    HWND m_hBtnCalculate, m_hBtnClear, m_hBtnSelectAll, m_hBtnDeselectAll, m_hBtnPause; // <-- Nuevo: botón pausa
     HWND m_hComboRobotType;
     std::vector<HWND> m_hEditsLargo;
     std::vector<HWND> m_hEditsAncho;

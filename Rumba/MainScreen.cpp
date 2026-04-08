@@ -1,9 +1,15 @@
-#include <windows.h>
+﻿#include <windows.h>
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 
 #include "MainScreen.h"
 #include "Theme.h"
+
+#define ID_TIMER_RUMBA_ANIM 2
+
+const double MAX_CASA_ANCHO = 2000.0;
+const double MAX_CASA_ALTO = 2000.0;
 
 // --- FUNCIONES AUXILIARES DE DIBUJO ---
 static void localDibujarRectRedondeado(HDC hdc, int x, int y, int w, int h, COLORREF colorFondo, COLORREF colorBorde, int radio = 8) {
@@ -59,10 +65,10 @@ static std::string localFormatearNumero(double num, int decimales = 0) {
 }
 
 
-// --- IMPLEMENTACI�N DE MAIN SCREEN ---
-
 MainScreen::MainScreen(HINSTANCE hInstance, HWND hWnd)
-    : m_hInstance(hInstance), m_hWnd(hWnd), m_robotActual("dummy", 0), m_isCalculating(false)
+    : m_hInstance(hInstance), m_hWnd(hWnd), m_isCalculating(false), m_animActive(false), m_isPaused(false),
+    m_hBtnCalculate(NULL), m_hBtnClear(NULL), m_hBtnSelectAll(NULL), m_hBtnDeselectAll(NULL), m_hBtnPause(NULL),
+    m_hComboRobotType(NULL), m_robotActual("dummy", 0)
 {
     m_zonas.emplace_back("Zona 1", 500.0, 150.0);
     m_zonas.emplace_back("Zona 2", 480.0, 101.0);
@@ -73,17 +79,17 @@ MainScreen::MainScreen(HINSTANCE hInstance, HWND hWnd)
     m_robots.emplace_back("Turbo", 1500.0);
     m_robots.emplace_back("Ecologico", 750.0);
     m_robotActual = m_robots[0];
+
+    for (int i = 0; i < 4; i++) {
+        m_rumbas[i].active = false;
+        m_rumbas[i].xPct = 0.5; m_rumbas[i].yPct = 0.5;
+        m_rumbas[i].dxPct = 0.02; m_rumbas[i].dyPct = 0.03;
+    }
 }
 
 MainScreen::~MainScreen() {
-    DestroyWindow(m_hBtnCalculate);
-    DestroyWindow(m_hBtnClear);
-    DestroyWindow(m_hComboRobotType);
-    DestroyWindow(m_hBtnSelectAll);
-    DestroyWindow(m_hBtnDeselectAll);
-    for (size_t i = 0; i < m_hEditsLargo.size(); ++i) DestroyWindow(m_hEditsLargo[i]);
-    for (size_t i = 0; i < m_hEditsAncho.size(); ++i) DestroyWindow(m_hEditsAncho[i]);
-    for (size_t i = 0; i < m_hChecks.size(); ++i) DestroyWindow(m_hChecks[i]);
+    KillTimer(m_hWnd, ID_TIMER_RUMBA_ANIM);
+    if (m_hBtnPause) DestroyWindow(m_hBtnPause);
 }
 
 void MainScreen::HandlePaint(HDC hdc, const RECT& clientRect) {
@@ -100,8 +106,48 @@ void MainScreen::HandlePaint(HDC hdc, const RECT& clientRect) {
     DeleteDC(hdcMem);
 }
 
+bool MainScreen::ReadInputsAndValidate(bool showMessages) {
+    if (m_hEditsLargo.size() != m_zonas.size() || m_hEditsAncho.size() != m_zonas.size()) {
+        return false;
+    }
+
+    for (size_t i = 0; i < m_zonas.size(); ++i) {
+        if (!m_hEditsLargo[i] || !m_hEditsAncho[i]) return false;
+
+        char buffer[64];
+        GetWindowTextA(m_hEditsLargo[i], buffer, 64);
+        m_zonas[i].largo = atof(buffer);
+
+        GetWindowTextA(m_hEditsAncho[i], buffer, 64);
+        m_zonas[i].ancho = atof(buffer);
+    }
+
+    double maxCol1Largo = (m_zonas[0].largo > m_zonas[1].largo) ? m_zonas[0].largo : m_zonas[1].largo;
+    double maxCol2Largo = (m_zonas[2].largo > m_zonas[3].largo) ? m_zonas[2].largo : m_zonas[3].largo;
+    double totalLargo = maxCol1Largo + maxCol2Largo;
+
+    double maxFila1Ancho = (m_zonas[0].ancho > m_zonas[2].ancho) ? m_zonas[0].ancho : m_zonas[2].ancho;
+    double maxFila2Ancho = (m_zonas[1].ancho > m_zonas[3].ancho) ? m_zonas[1].ancho : m_zonas[3].ancho;
+    double totalAncho = maxFila1Ancho + maxFila2Ancho;
+
+    if (totalLargo > MAX_CASA_ANCHO || totalAncho > MAX_CASA_ALTO) {
+        if (showMessages) {
+            MessageBoxA(m_hWnd, "¡Dimensiones demasiado grandes para el plano!", "Límite Excedido", MB_OK | MB_ICONERROR);
+        }
+        return false;
+    }
+
+    return true;
+}
+
 void MainScreen::HandleCommand(WPARAM wParam, LPARAM lParam) {
     int cmd = LOWORD(wParam);
+
+    if (HIWORD(wParam) == EN_CHANGE) {
+        ReadInputsAndValidate(false);
+        InvalidateRect(m_hWnd, NULL, FALSE);
+        return;
+    }
 
     if (cmd == ID_BTN_CALCULATE) {
         OnCalculateClick();
@@ -115,6 +161,14 @@ void MainScreen::HandleCommand(WPARAM wParam, LPARAM lParam) {
     else if (cmd == ID_BTN_DESELECT_ALL) {
         OnSelectAllClick(false);
     }
+    else if (cmd == ID_BTN_QUIT) {
+        PostMessageA(m_hWnd, WM_CLOSE, 0, 0);
+    }
+    else if (cmd == ID_BTN_PAUSE) { // LÓGICA DE PAUSA
+        m_isPaused = !m_isPaused;
+        if (m_isPaused) SetWindowTextA(m_hBtnPause, "REANUDAR");
+        else SetWindowTextA(m_hBtnPause, "PAUSAR");
+    }
     else if (cmd == ID_COMBO_ROBOT_TYPE && HIWORD(wParam) == CBN_SELCHANGE) {
         UpdateRobotFromSelection();
     }
@@ -122,26 +176,39 @@ void MainScreen::HandleCommand(WPARAM wParam, LPARAM lParam) {
         for (size_t i = 0; i < m_hChecks.size(); ++i) {
             if ((HWND)lParam == m_hChecks[i]) {
                 m_zonas[i].isSelected = (IsDlgButtonChecked(m_hWnd, (int)(ID_CHECK_ZONA1 + i)) == BST_CHECKED);
-                InvalidateRect(m_hWnd, NULL, TRUE);
+                InvalidateRect(m_hWnd, NULL, FALSE);
                 break;
             }
         }
     }
 }
 
+void MainScreen::HandleTimer(WPARAM wParam) {
+    if (wParam == ID_TIMER_RUMBA_ANIM && m_animActive && !m_isPaused) {
+        for (int i = 0; i < 4; i++) {
+            if (!m_rumbas[i].active) continue;
+
+            m_rumbas[i].xPct += m_rumbas[i].dxPct;
+            m_rumbas[i].yPct += m_rumbas[i].dyPct;
+
+            if (m_rumbas[i].xPct <= 0.05 || m_rumbas[i].xPct >= 0.95) m_rumbas[i].dxPct = -m_rumbas[i].dxPct;
+            if (m_rumbas[i].yPct <= 0.05 || m_rumbas[i].yPct >= 0.95) m_rumbas[i].dyPct = -m_rumbas[i].dyPct;
+        }
+        InvalidateRect(m_hWnd, NULL, FALSE);
+    }
+}
+
 void MainScreen::OnCalculateClick() {
     if (m_isCalculating) return;
 
+    if (!ReadInputsAndValidate(true)) return;
+
     std::vector<Zona> zonasSeleccionadas;
     for (size_t i = 0; i < m_zonas.size(); ++i) {
-        m_zonas[i].isSelected = (IsDlgButtonChecked(m_hWnd, (int)(ID_CHECK_ZONA1 + i)) == BST_CHECKED);
-
-        char buffer[64];
-        GetWindowTextA(m_hEditsLargo[i], buffer, 64);
-        m_zonas[i].largo = atof(buffer);
-
-        GetWindowTextA(m_hEditsAncho[i], buffer, 64);
-        m_zonas[i].ancho = atof(buffer);
+        m_rumbas[i].active = m_zonas[i].isSelected;
+        m_rumbas[i].xPct = 0.1 + (rand() % 80) / 100.0;
+        m_rumbas[i].yPct = 0.1 + (rand() % 80) / 100.0;
+        m_rumbas[i].trail.clear();
 
         if (m_zonas[i].isSelected) {
             zonasSeleccionadas.push_back(m_zonas[i]);
@@ -149,15 +216,18 @@ void MainScreen::OnCalculateClick() {
     }
 
     if (zonasSeleccionadas.empty()) {
-        MessageBoxA(m_hWnd, "Por favor, seleccione al menos una zona para limpiar.", "Advertencia", MB_OK | MB_ICONWARNING);
+        MessageBoxA(m_hWnd, "Selecciona al menos una zona para limpiar.", "Advertencia", MB_OK | MB_ICONWARNING);
         return;
     }
 
     UpdateRobotFromSelection();
 
     m_isCalculating = true;
+    m_animActive = true; // Empieza la rumba
     EnableWindow(m_hBtnCalculate, FALSE);
     SetWindowTextA(m_hBtnCalculate, "Calculando...");
+
+    SetTimer(m_hWnd, ID_TIMER_RUMBA_ANIM, 25, NULL); // Reloj encendido
 
     std::thread t([this, zonasSeleccionadas]() {
         ResultadoCalculo res = m_robotActual.ejecutarCalculoDistribuido(zonasSeleccionadas);
@@ -170,7 +240,7 @@ void MainScreen::OnCalculateClick() {
         m_isCalculating = false;
         EnableWindow(m_hBtnCalculate, TRUE);
         SetWindowTextA(m_hBtnCalculate, "CALCULAR");
-        InvalidateRect(m_hWnd, NULL, TRUE);
+        InvalidateRect(m_hWnd, NULL, FALSE);
         });
     t.detach();
 }
@@ -179,7 +249,16 @@ void MainScreen::OnClearClick() {
     std::lock_guard<std::mutex> lock(m_mutex);
     m_resultado = ResultadoCalculo();
     m_isCalculating = false;
-    InvalidateRect(m_hWnd, NULL, TRUE);
+    m_animActive = false; // Matar rumbas
+    m_isPaused = false;
+    SetWindowTextA(m_hBtnPause, "PAUSAR");
+
+    for (int i = 0; i < 4; i++) {
+        m_rumbas[i].active = false;
+        m_rumbas[i].trail.clear();
+    }
+    KillTimer(m_hWnd, ID_TIMER_RUMBA_ANIM);
+    InvalidateRect(m_hWnd, NULL, FALSE);
 }
 
 void MainScreen::OnSelectAllClick(bool select) {
@@ -187,12 +266,13 @@ void MainScreen::OnSelectAllClick(bool select) {
         m_zonas[i].isSelected = select;
         CheckDlgButton(m_hWnd, (int)(ID_CHECK_ZONA1 + i), select ? BST_CHECKED : BST_UNCHECKED);
     }
-    InvalidateRect(m_hWnd, NULL, TRUE);
+    InvalidateRect(m_hWnd, NULL, FALSE);
 }
 
 void MainScreen::UpdateRobotFromSelection() {
-    int index = (int)SendMessage(m_hComboRobotType, CB_GETCURSEL, 0, 0);
-    if (index != CB_ERR) {
+    if (!m_hComboRobotType) return;
+    int index = (int)SendMessageA(m_hComboRobotType, CB_GETCURSEL, 0, 0);
+    if (index != CB_ERR && index < (int)m_robots.size()) {
         m_robotActual = m_robots[index];
     }
 }
@@ -201,45 +281,51 @@ void MainScreen::CreateControls() {
     HFONT hFont = CreateFontA(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, "Segoe UI");
     HFONT hFontBold = CreateFontA(16, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, "Segoe UI");
 
-    int yPos = 125;
+    int yPos = 155; // BAJADO A 155 PARA QUE NO TOQUE LOS TÍTULOS
     for (size_t i = 0; i < m_zonas.size(); ++i) {
         HWND hCheck = CreateWindowA("BUTTON", "", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
-            35, yPos, 20, 20, m_hWnd, (HMENU)(ID_CHECK_ZONA1 + i), m_hInstance, NULL);
+            35, yPos + 3, 20, 20, m_hWnd, (HMENU)(ID_CHECK_ZONA1 + i), m_hInstance, NULL);
         CheckDlgButton(m_hWnd, (int)(ID_CHECK_ZONA1 + i), m_zonas[i].isSelected ? BST_CHECKED : BST_UNCHECKED);
         m_hChecks.push_back(hCheck);
 
         std::string largoStr = std::to_string((int)m_zonas[i].largo);
         HWND hEditLargo = CreateWindowExA(0, "EDIT", largoStr.c_str(), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER | ES_CENTER,
-            180, yPos - 2, 80, 24, m_hWnd, (HMENU)(ID_EDIT_LARGO_ZONA1 + i * 10), m_hInstance, NULL);
-        SendMessage(hEditLargo, WM_SETFONT, (WPARAM)hFont, TRUE);
+            160, yPos, 80, 24, m_hWnd, (HMENU)(ID_EDIT_LARGO_ZONA1 + i * 10), m_hInstance, NULL);
+        SendMessageA(hEditLargo, WM_SETFONT, (WPARAM)hFont, TRUE);
         m_hEditsLargo.push_back(hEditLargo);
 
         std::string anchoStr = std::to_string((int)m_zonas[i].ancho);
         HWND hEditAncho = CreateWindowExA(0, "EDIT", anchoStr.c_str(), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER | ES_CENTER,
-            280, yPos - 2, 80, 24, m_hWnd, (HMENU)(ID_EDIT_ANCHO_ZONA1 + i * 10 + 1), m_hInstance, NULL);
-        SendMessage(hEditAncho, WM_SETFONT, (WPARAM)hFont, TRUE);
+            260, yPos, 80, 24, m_hWnd, (HMENU)(ID_EDIT_ANCHO_ZONA1 + i * 10 + 1), m_hInstance, NULL);
+        SendMessageA(hEditAncho, WM_SETFONT, (WPARAM)hFont, TRUE);
         m_hEditsAncho.push_back(hEditAncho);
 
-        yPos += 35;
+        yPos += 40;
     }
 
-    m_hBtnSelectAll = CreateWindowA("BUTTON", "Sel. Todo", WS_CHILD | WS_VISIBLE, 35, yPos, 90, 24, m_hWnd, (HMENU)ID_BTN_SELECT_ALL, m_hInstance, NULL);
-    m_hBtnDeselectAll = CreateWindowA("BUTTON", "Des. Todo", WS_CHILD | WS_VISIBLE, 130, yPos, 90, 24, m_hWnd, (HMENU)ID_BTN_DESELECT_ALL, m_hInstance, NULL);
-    SendMessage(m_hBtnSelectAll, WM_SETFONT, (WPARAM)hFont, TRUE);
-    SendMessage(m_hBtnDeselectAll, WM_SETFONT, (WPARAM)hFont, TRUE);
+    m_hBtnSelectAll = CreateWindowA("BUTTON", "Sel. Todo", WS_CHILD | WS_VISIBLE, 35, 330, 90, 25, m_hWnd, (HMENU)ID_BTN_SELECT_ALL, m_hInstance, NULL);
+    m_hBtnDeselectAll = CreateWindowA("BUTTON", "Des. Todo", WS_CHILD | WS_VISIBLE, 130, 330, 90, 25, m_hWnd, (HMENU)ID_BTN_DESELECT_ALL, m_hInstance, NULL);
+    SendMessageA(m_hBtnSelectAll, WM_SETFONT, (WPARAM)hFont, TRUE);
+    SendMessageA(m_hBtnDeselectAll, WM_SETFONT, (WPARAM)hFont, TRUE);
 
-    m_hComboRobotType = CreateWindowA("COMBOBOX", "", CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE, 400, yPos, 200, 150, m_hWnd, (HMENU)ID_COMBO_ROBOT_TYPE, m_hInstance, NULL);
+    // FILA DE ACCIONES DISTRIBUIDAS (ORDENADAS)
+    m_hComboRobotType = CreateWindowA("COMBOBOX", "", CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE, 35, 383, 200, 150, m_hWnd, (HMENU)ID_COMBO_ROBOT_TYPE, m_hInstance, NULL);
     for (size_t i = 0; i < m_robots.size(); ++i) {
         std::string item = m_robots[i].nombre + " (" + std::to_string((int)m_robots[i].tasaLimpiezaCm2ps) + " cm2/s)";
-        SendMessage(m_hComboRobotType, CB_ADDSTRING, 0, (LPARAM)item.c_str());
+        SendMessageA(m_hComboRobotType, CB_ADDSTRING, 0, (LPARAM)item.c_str());
     }
-    SendMessage(m_hComboRobotType, CB_SETCURSEL, 0, 0);
-    SendMessage(m_hComboRobotType, WM_SETFONT, (WPARAM)hFont, TRUE);
+    SendMessageA(m_hComboRobotType, CB_SETCURSEL, 0, 0);
+    SendMessageA(m_hComboRobotType, WM_SETFONT, (WPARAM)hFont, TRUE);
 
-    m_hBtnCalculate = CreateWindowA("BUTTON", "CALCULAR", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 620, yPos - 2, 120, 30, m_hWnd, (HMENU)ID_BTN_CALCULATE, m_hInstance, NULL);
-    m_hBtnClear = CreateWindowA("BUTTON", "LIMPIAR", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 750, yPos - 2, 120, 30, m_hWnd, (HMENU)ID_BTN_CLEAR, m_hInstance, NULL);
-    SendMessage(m_hBtnCalculate, WM_SETFONT, (WPARAM)hFontBold, TRUE);
-    SendMessage(m_hBtnClear, WM_SETFONT, (WPARAM)hFontBold, TRUE);
+    m_hBtnCalculate = CreateWindowA("BUTTON", "CALCULAR", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 250, 380, 130, 32, m_hWnd, (HMENU)ID_BTN_CALCULATE, m_hInstance, NULL);
+    m_hBtnClear = CreateWindowA("BUTTON", "LIMPIAR", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 400, 380, 130, 32, m_hWnd, (HMENU)ID_BTN_CLEAR, m_hInstance, NULL);
+    m_hBtnPause = CreateWindowA("BUTTON", "PAUSAR", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 550, 380, 130, 32, m_hWnd, (HMENU)ID_BTN_PAUSE, m_hInstance, NULL);
+    HWND hBtnQuit = CreateWindowA("BUTTON", "SALIR", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 755, 380, 130, 32, m_hWnd, (HMENU)ID_BTN_QUIT, m_hInstance, NULL);
+
+    SendMessageA(m_hBtnCalculate, WM_SETFONT, (WPARAM)hFontBold, TRUE);
+    SendMessageA(m_hBtnClear, WM_SETFONT, (WPARAM)hFontBold, TRUE);
+    SendMessageA(m_hBtnPause, WM_SETFONT, (WPARAM)hFontBold, TRUE);
+    SendMessageA(hBtnQuit, WM_SETFONT, (WPARAM)hFontBold, TRUE);
 }
 
 void MainScreen::DrawUI(HDC hdc, const RECT& clientRect) {
@@ -253,48 +339,48 @@ void MainScreen::DrawUI(HDC hdc, const RECT& clientRect) {
     localDibujarTextoCentrado(hdc, "ROBOT ASPIRADOR - Simulador de Limpieza", 0, 15, width, COLOR_TITULO, 24, true);
 
     DrawZonesPanel(hdc);
-    DrawRoomPlan(hdc, width / 2 + 10, 80, width / 2 - 30, 220);
-    DrawResultsPanel(hdc, 20, 320, width - 40, 200);
+    DrawRoomPlan(hdc, width / 2 + 10, 80, width / 2 - 30, 280);
+    DrawResultsPanel(hdc, 20, 440, width - 40, 200);
 
     localDibujarTextoCentrado(hdc, "v2.0 | C++ Multithreading | Win32 GUI", 0, height - 25, width, COLOR_TEXTO_DIM, 11, false);
 }
 
 void MainScreen::DrawZonesPanel(HDC hdc) {
-    int panelX = 20, panelY = 80, panelW = 900 / 2 - 30, panelH = 220;
+    int panelX = 20, panelY = 80, panelW = 920 / 2 - 30, panelH = 280;
 
     localDibujarRectRedondeado(hdc, panelX, panelY, panelW, panelH, COLOR_PANEL, COLOR_BORDE, 10);
-    localDibujarTexto(hdc, "DEFINIR AREAS Y TIPO DE RUMBA", panelX + 15, panelY + 12, COLOR_TITULO, 15, true);
+    localDibujarTexto(hdc, "DEFINIR AREAS Y DIMENSIONES", panelX + 15, panelY + 12, COLOR_TITULO, 15, true);
 
     int tabX = panelX + 15;
-    int tabY = panelY + 40;
-    localDibujarTexto(hdc, "Zona", tabX + 40, tabY, COLOR_TEXTO_DIM, 13, true);
-    localDibujarTexto(hdc, "Largo (cm)", tabX + 180, tabY, COLOR_TEXTO_DIM, 13, true);
-    localDibujarTexto(hdc, "Ancho (cm)", tabX + 280, tabY, COLOR_TEXTO_DIM, 13, true);
-    localDibujarTexto(hdc, "Area (cm2)", tabX + 370, tabY, COLOR_TEXTO_DIM, 13, true);
+    int tabY = panelY + 45; // ARRIBA DEL TODO PARA QUE NO SE TRASLAPEN
+    localDibujarTexto(hdc, "Zona", tabX + 35, tabY, COLOR_TEXTO_DIM, 13, true);
+    localDibujarTexto(hdc, "Largo (cm)", tabX + 130, tabY, COLOR_TEXTO_DIM, 13, true);
+    localDibujarTexto(hdc, "Ancho (cm)", tabX + 230, tabY, COLOR_TEXTO_DIM, 13, true);
+    localDibujarTexto(hdc, "Area (cm2)", tabX + 330, tabY, COLOR_TEXTO_DIM, 13, true);
 
     COLORREF coloresZ[] = { COLOR_ZONA1, COLOR_ZONA2, COLOR_ZONA3, COLOR_ZONA4 };
+
+    int labelY = 160; // COORDINA EXACTAMENTE CON CAJAS EDIT
     for (size_t i = 0; i < m_zonas.size(); i++) {
-        int fY = tabY + 28 + (int)i * 35;
-        localDibujarTexto(hdc, m_zonas[i].nombre, tabX + 60, fY, coloresZ[i], 14, false);
+        localDibujarTexto(hdc, m_zonas[i].nombre, tabX + 35, labelY, coloresZ[i], 14, false);
 
         std::lock_guard<std::mutex> lock(m_mutex);
         if (m_resultado.calculado) {
             bool found = false;
             for (size_t j = 0; j < m_resultado.zonasCalculadas.size(); ++j) {
                 if (m_resultado.zonasCalculadas[j].nombre == m_zonas[i].nombre) {
-                    localDibujarTexto(hdc, localFormatearNumero(m_resultado.zonasCalculadas[j].area), tabX + 370, fY, COLOR_ACENTO, 14, true);
+                    localDibujarTexto(hdc, localFormatearNumero(m_resultado.zonasCalculadas[j].area), tabX + 330, labelY, COLOR_ACENTO, 14, true);
                     found = true;
                     break;
                 }
             }
-            if (!found) localDibujarTexto(hdc, "---", tabX + 370, fY, COLOR_TEXTO_DIM, 14, false);
+            if (!found) localDibujarTexto(hdc, "---", tabX + 330, labelY, COLOR_TEXTO_DIM, 14, false);
         }
         else {
-            localDibujarTexto(hdc, "---", tabX + 370, fY, COLOR_TEXTO_DIM, 14, false);
+            localDibujarTexto(hdc, "---", tabX + 330, labelY, COLOR_TEXTO_DIM, 14, false);
         }
+        labelY += 40;
     }
-
-    localDibujarTexto(hdc, "Tipo de Robot:", 290, 275, COLOR_TEXTO_DIM, 13, true);
 }
 
 
@@ -304,7 +390,7 @@ void MainScreen::DrawResultsPanel(HDC hdc, int panelX, int panelY, int panelW, i
 
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_isCalculating) {
-        localDibujarTextoCentrado(hdc, "Realizando calculo distribuido en hilos...", panelX, panelY + 90, panelW, COLOR_ACENTO2, 18, true);
+        localDibujarTextoCentrado(hdc, "Calculando areas en hilos distribuidos concurrentes...", panelX, panelY + 90, panelW, COLOR_ACENTO2, 18, true);
     }
     else if (m_resultado.calculado) {
         int resY = panelY + 45;
@@ -334,12 +420,9 @@ void MainScreen::DrawResultsPanel(HDC hdc, int panelX, int panelY, int panelW, i
         std::ostringstream ossSeg; ossSeg << std::fixed << std::setprecision(1) << m_resultado.tiempoSegundos << " segundos";
         localDibujarTextoCentrado(hdc, ossSeg.str(), col3X - 10, resY + 50, cardW, COLOR_TEXTO_DIM, 13, false);
 
-        std::string hilosStr = "Calculo realizado en " + std::to_string(m_resultado.zonasCalculadas.size()) + " hilos concurrentes.";
-        localDibujarTexto(hdc, hilosStr, panelX + 30, resY + 110, COLOR_TEXTO_DIM, 12, false);
-
     }
     else {
-        localDibujarTextoCentrado(hdc, "Define las areas, selecciona las zonas a limpiar y presiona 'Calcular'.", panelX, panelY + 90, panelW, COLOR_TEXTO_DIM, 16, false);
+        localDibujarTextoCentrado(hdc, "Selecciona las areas a limpiar, tipo de robot y presiona 'Calcular'.", panelX, panelY + 90, panelW, COLOR_TEXTO_DIM, 16, false);
     }
 }
 
@@ -347,48 +430,86 @@ void MainScreen::DrawRoomPlan(HDC hdc, int panelX, int panelY, int panelW, int p
     localDibujarRectRedondeado(hdc, panelX, panelY, panelW, panelH, COLOR_PANEL, COLOR_BORDE, 10);
     localDibujarTextoCentrado(hdc, "Vista de Planta", panelX, panelY + 10, panelW, COLOR_TITULO, 16, true);
 
-    int drawX = panelX + 20, drawY = panelY + 40, drawW = panelW - 40, drawH = panelH - 60;
-    double habLargo = 590.0, habAncho = 480.0;
+    int drawX = panelX + 15, drawY = panelY + 40, drawW = panelW - 30, drawH = panelH - 60;
 
-    double escalaX = (double)drawW / habLargo;
-    double escalaY = (double)drawH / habAncho;
+    double col1Largo = (m_zonas[0].largo > m_zonas[1].largo) ? m_zonas[0].largo : m_zonas[1].largo;
+    double col2Largo = (m_zonas[2].largo > m_zonas[3].largo) ? m_zonas[2].largo : m_zonas[3].largo;
+    double totalAnchoX = col1Largo + col2Largo;
+
+    double fila1Ancho = (m_zonas[0].ancho > m_zonas[2].ancho) ? m_zonas[0].ancho : m_zonas[2].ancho;
+    double fila2Ancho = (m_zonas[1].ancho > m_zonas[3].ancho) ? m_zonas[1].ancho : m_zonas[3].ancho;
+    double totalAltoY = fila1Ancho + fila2Ancho;
+
+    double escalaX = (double)drawW / totalAnchoX;
+    double escalaY = (double)drawH / totalAltoY;
     double escala = (escalaX < escalaY) ? escalaX : escalaY;
 
-    int offsetX = drawX + (int)((drawW - habLargo * escala) / 2);
-    int offsetY = drawY + (int)((drawH - habAncho * escala) / 2);
+    int offsetX = drawX + (int)((drawW - totalAnchoX * escala) / 2);
+    int offsetY = drawY + (int)((drawH - totalAltoY * escala) / 2);
 
-    COLORREF coloresZona[] = { COLOR_ZONA1, COLOR_ZONA2, COLOR_ZONA3, COLOR_ZONA4 };
-    struct ZonaPos { double x, y, largo, ancho; };
-    ZonaPos posiciones[] = { {0,0,500,150}, {0,150,480,101}, {0,251,309,229}, {500,0,90,220} };
+    COLORREF coloresZ[] = { COLOR_ZONA1, COLOR_ZONA2, COLOR_ZONA3, COLOR_ZONA4 };
 
-    for (size_t i = 0; i < 4; i++) {
+    struct ZonaLayout { int x, y, w, h; };
+    ZonaLayout layouts[4];
+
+    layouts[0] = { offsetX, offsetY, (int)(m_zonas[0].largo * escala), (int)(m_zonas[0].ancho * escala) };
+    layouts[1] = { offsetX, offsetY + (int)(fila1Ancho * escala), (int)(m_zonas[1].largo * escala), (int)(m_zonas[1].ancho * escala) };
+    layouts[2] = { offsetX + (int)(col1Largo * escala), offsetY, (int)(m_zonas[2].largo * escala), (int)(m_zonas[2].ancho * escala) };
+    layouts[3] = { offsetX + (int)(col1Largo * escala), offsetY + (int)(fila1Ancho * escala), (int)(m_zonas[3].largo * escala), (int)(m_zonas[3].ancho * escala) };
+
+    for (int i = 0; i < 4; i++) {
         if (!m_zonas[i].isSelected) continue;
 
-        int zx = offsetX + (int)(posiciones[i].x * escala);
-        int zy = offsetY + (int)(posiciones[i].y * escala);
-        int zw = (int)(posiciones[i].largo * escala);
-        int zh = (int)(posiciones[i].ancho * escala);
-
-        HBRUSH hBrZ = CreateSolidBrush(coloresZona[i]);
-        HPEN hPenZ = CreatePen(PS_SOLID, 2, coloresZona[i]);
+        HBRUSH hBrZ = CreateSolidBrush(RGB(50, 50, 70));
+        HPEN hPenZ = CreatePen(PS_SOLID, 2, coloresZ[i]);
         SelectObject(hdc, hBrZ);
         SelectObject(hdc, hPenZ);
 
-        LOGBRUSH lb;
-        lb.lbStyle = BS_HATCHED;
-        lb.lbColor = coloresZona[i];
-        lb.lbHatch = HS_DIAGCROSS;
-        HBRUSH hHatchBrush = CreateBrushIndirect(&lb);
-        HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hHatchBrush);
-        SetBkMode(hdc, TRANSPARENT);
+        Rectangle(hdc, layouts[i].x, layouts[i].y, layouts[i].x + layouts[i].w, layouts[i].y + layouts[i].h);
 
-        Rectangle(hdc, zx, zy, zx + zw, zy + zh);
-
-        SelectObject(hdc, hOldBrush);
-        DeleteObject(hHatchBrush);
         DeleteObject(hBrZ);
         DeleteObject(hPenZ);
 
-        localDibujarTextoCentrado(hdc, "Z" + std::to_string(i + 1), zx, zy + zh / 2 - 8, zw, coloresZona[i], 14, true);
+        localDibujarTextoCentrado(hdc, "Z" + std::to_string(i + 1), layouts[i].x, layouts[i].y + layouts[i].h / 2 - 8, layouts[i].w, coloresZ[i], 14, true);
+    }
+
+    if (m_animActive) { // ESTELAS SEGUIDAS DIBUJADAS POR ENCIMA
+        for (int i = 0; i < 4; i++) {
+            if (!m_rumbas[i].active) continue;
+
+            int ballX = layouts[i].x + (int)(m_rumbas[i].xPct * layouts[i].w);
+            int ballY = layouts[i].y + (int)(m_rumbas[i].yPct * layouts[i].h);
+
+            m_rumbas[i].trail.push_back({ ballX, ballY });
+
+            HPEN hPenTrail = CreatePen(PS_SOLID, 8, coloresZ[i]);
+            SelectObject(hdc, hPenTrail);
+            if (m_rumbas[i].trail.size() > 1) {
+                MoveToEx(hdc, m_rumbas[i].trail[0].x, m_rumbas[i].trail[0].y, NULL);
+                for (size_t t = 1; t < m_rumbas[i].trail.size(); ++t) {
+                    LineTo(hdc, m_rumbas[i].trail[t].x, m_rumbas[i].trail[t].y);
+                }
+            }
+            DeleteObject(hPenTrail);
+        }
+    }
+
+    if (m_animActive) { // BOLITAS DIBUJADAS POR ENCIMA
+        for (int i = 0; i < 4; i++) {
+            if (!m_rumbas[i].active) continue;
+
+            int ballX = layouts[i].x + (int)(m_rumbas[i].xPct * layouts[i].w);
+            int ballY = layouts[i].y + (int)(m_rumbas[i].yPct * layouts[i].h);
+
+            HBRUSH hBrushRumba = CreateSolidBrush(coloresZ[i]);
+            HPEN hPenRumba = CreatePen(PS_SOLID, 2, RGB(255, 255, 255));
+            SelectObject(hdc, hBrushRumba);
+            SelectObject(hdc, hPenRumba);
+
+            Ellipse(hdc, ballX - 6, ballY - 6, ballX + 6, ballY + 6);
+
+            DeleteObject(hBrushRumba);
+            DeleteObject(hPenRumba);
+        }
     }
 }
