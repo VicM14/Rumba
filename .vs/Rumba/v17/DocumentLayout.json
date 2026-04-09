@@ -85,9 +85,9 @@
               "Title": "MainScreen.cpp",
               "DocumentMoniker": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp",
               "RelativeDocumentMoniker": "Rumba\\MainScreen.cpp",
-              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp*",
-              "RelativeToolTip": "Rumba\\MainScreen.cpp*",
-              "ViewState": "AgIAAJICAAAAAAAAAAAswLMCAAABAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\mariafernanda.orozco\\source\\repos\\Rumba\\Rumba\\MainScreen.cpp",
+              "RelativeToolTip": "Rumba\\MainScreen.cpp",
+              "ViewState": "AgIAAKUBAAAAAAAAAAAswFsCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-04-07T19:06:15.871Z",
               "EditorCaption": ""
@@ -102,8 +102,7 @@
               "RelativeToolTip": "Rumba\\DataStructures.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-07T19:06:52.258Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:06:52.258Z"
             },
             {
               "$type": "Document",
@@ -115,8 +114,7 @@
               "RelativeToolTip": "Rumba\\MainScreen.h",
               "ViewState": "AgIAADgAAAAAAAAAAAAswEQAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-07T19:07:13.575Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:07:13.575Z"
             },
             {
               "$type": "Document",
@@ -128,8 +126,7 @@
               "RelativeToolTip": "Rumba\\main.cpp",
               "ViewState": "AgIAAFsAAAAAAAAAAAAswGoAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-04-07T19:05:50.788Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:05:50.788Z"
             },
             {
               "$type": "Document",
@@ -141,8 +138,7 @@
               "RelativeToolTip": "Rumba\\Theme.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-07T19:07:37.887Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:07:37.887Z"
             },
             {
               "$type": "Document",
@@ -154,8 +150,7 @@
               "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\vector",
               "ViewState": "AgIAAHYHAAAAAAAAAAAiwI4HAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-08T12:47:17.288Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-08T12:47:17.288Z"
             },
             {
               "$type": "Document",
@@ -167,8 +162,7 @@
               "RelativeToolTip": "Rumba\\Robot.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-07T19:07:00.881Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:07:00.881Z"
             },
             {
               "$type": "Document",
@@ -180,8 +174,7 @@
               "RelativeToolTip": "Rumba\\Robot.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-04-07T19:06:02.974Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:06:02.974Z"
             },
             {
               "$type": "Document",
@@ -193,8 +186,7 @@
               "RelativeToolTip": "Rumba\\SplashScreen.cpp",
               "ViewState": "AgIAAEgAAAAAAAAAAAAYwFgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-04-07T19:06:30.946Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:06:30.946Z"
             },
             {
               "$type": "Document",
@@ -206,8 +198,7 @@
               "RelativeToolTip": "Rumba\\SplashScreen.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-07T19:07:26.029Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T19:07:26.029Z"
             }
           ]
         }
